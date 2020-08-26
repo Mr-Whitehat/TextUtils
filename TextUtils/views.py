@@ -86,7 +86,7 @@ def analyze(request):
 			else:
 				count+=1
 
-		params = {'pr':count,'str':'Number of Charactors: ','analyzed_text':djtext,
+		params = {'pr':count,'str':'Number of Charactors: ','analyzed_text':analyzed,
 				  'heading': 'Your analyzed text','Success': 'Success',
 				  'message': 'Your text has been analyzed', 'color': 'success'}
 		# djtext = analyzed
