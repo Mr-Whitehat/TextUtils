@@ -10,13 +10,14 @@ def index(request):
 	return render(request,'index.html')#,param)
 
 def analyze(request):
-	djtext=request.POST.get('text',"")
-	removepun=request.POST.get('removepunc','off')
-	uppercase=request.POST.get('uppercase','off')
-	lowercase=request.POST.get('lowercase','off')
-	NewLineRemover=request.POST.get('NewLineRemover','off')
-	extraspaceremover=request.POST.get('extraspaceremover','off')
-	charactorcounter=request.POST.get('charactorcounter','off')
+	djtext = request.POST.get('text',"")
+	removepun = request.POST.get('removepunc','off')
+	uppercase = request.POST.get('uppercase','off')
+	lowercase = request.POST.get('lowercase','off')
+	NewLineRemover = request.POST.get('NewLineRemover','off')
+	extraspaceremover = request.POST.get('extraspaceremover','off')
+	removenumber = request.POST.get('removenumber', 'off')
+	charactorcounter = request.POST.get('charactorcounter','off')
 
 	if djtext == "":
 		params = {'heading': 'Error :( ', 'Success': 'Sorry', 'message': 'Text is not entered', 'color': 'danger'}
@@ -72,14 +73,36 @@ def analyze(request):
 			count+=1
 		for index, char in enumerate(djtext):
 			if not(index+1< count and djtext[index]==" " and djtext[index+1]==" "):
-				analyzed+=char
+				analyzed+= char
 
 		params = {'analyzed_text': analyzed, 'heading': 'Your analyzed text',
 						  'Success': 'Success', 'message': 'Your text has been analyzed', 'color': 'success'}
 		djtext = analyzed
 
+	if removenumber == 'on':
+		string = djtext
+		numbers = '''1234567890'''
+		for digit in string:
+			if digit in numbers:
+				string = string.replace(digit, "")
+		print(string)
+
+		analyzed = ""
+		count = 0
+		for char in string:
+			count += 1
+		for index, char in enumerate(string):
+			if not (index + 1 < count and string[index] == " " and string[index + 1] == " "):
+				analyzed += char
+
+		print(analyzed)
+		params = {'analyzed_text': analyzed, 'heading': 'Your analyzed text',
+				  'Success': 'Success', 'message': 'Your text has been analyzed', 'color': 'success'}
+		djtext = analyzed
+
+
 	if charactorcounter=='on':
-		count=0
+		count = 0
 		for char in djtext:
 			if(char =='\n'):
 				count-=0
@@ -92,7 +115,7 @@ def analyze(request):
 		# djtext = analyzed
 
 
-	if removepun !='on'and uppercase !='on' and lowercase !='on' and NewLineRemover !='on' and extraspaceremover !='on' and charactorcounter !='on' :
+	if removepun !='on'and uppercase !='on' and lowercase !='on' and NewLineRemover !='on' and extraspaceremover !='on' and removenumber != 'on' and charactorcounter !='on' :
 		params={'heading':'Error :( ','Success':'Sorry','message':'Please select an operation','color':'danger'}
 
 	return render(request, 'analyze.html', params)
