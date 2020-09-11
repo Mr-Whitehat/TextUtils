@@ -66,7 +66,7 @@ def analyze(request):
 				 'Success': 'Success', 'message': 'Your text has been analyzed', 'color': 'success'}
 		djtext = analyzed
 
-	if extraspaceremover=='on':
+	if extraspaceremover == 'on':
 		analyzed=""
 		count=0
 		for char in djtext:
